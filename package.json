@@ -1,6 +1,6 @@
 {
   "name": "react-native-android-legacy-fingerprint",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Yet another react-native package",
   "main": "dist/index.js",
   "module": "dist/index.js",
