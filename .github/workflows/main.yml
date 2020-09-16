@@ -19,6 +19,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
 
+      - run: npm ci
       - run: npm run ci:lint:ts
       - run: npm run build
 
@@ -36,6 +37,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
 
+      - run: npm ci
       - run: npm run ci:build
       - run: npm run ci:lint:ts
       - run: npm run ci:lint:kotlin
@@ -52,6 +54,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Show the currently detailed version of Xcode for CLI
         run: xcode-select -p
+      - run: npm ci
       - run: npm run ci:build
       - run: cd example && npm run install:pods
       - run: npm run ci:compile:ios
