@@ -59,18 +59,16 @@
     "typescript": "^4.0.2"
   },
   "files": [
-    "android",
-    "ios",
+    "android/src",
+    "android/build.gradle",
     "src",
     "dist",
-    "example",
     ".dockerignore",
     ".editorconfig",
     ".eslintrc",
     ".eslintignore",
     ".prettierrc",
     "*.md",
-    "*.podspec",
     "LICENSE"
   ]
 }
