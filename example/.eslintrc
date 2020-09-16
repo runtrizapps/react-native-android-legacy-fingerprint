@@ -1,0 +1,16 @@
+{
+  "root": false,
+  "rules": {
+    "no-void": ["error", { "allowAsStatement": true }],
+    "react/no-unescaped-entities": "off",
+    "react-native/no-inline-styles": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ]
+  }
+}

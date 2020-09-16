@@ -1,0 +1,76 @@
+{
+  "name": "react-native-android-legacy-fingerprint",
+  "version": "0.0.1",
+  "description": "Yet another react-native package",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "react-native"
+  ],
+  "author": "runtrizapps",
+  "license": "MIT",
+  "scripts": {
+    "init:package": "cd example && npm i && npm run install:pods",
+    "build": "rm -rf dist && tsc -p ./src",
+    "watch": "npm run build -- -w",
+    "lint": "npm run lint:ts && npm run lint:kotlin",
+    "lint:ts": "eslint . --ext .ts,.tsx --fix",
+    "lint:kotlin": "cd example/android && ./gradlew ktlintMainSourceSetFormat",
+    "ci:build": "cd example && npm i",
+    "ci:lint": "npm run ci:lint:ts && npm run ci:lint:kotlin",
+    "ci:lint:ts": "eslint . --ext .ts,.tsx",
+    "ci:lint:kotlin": "cd example/android && ./gradlew ktlintMainSourceSetCheck",
+    "ci:compile:android": "cd example/android && ./gradlew compileDebugSources",
+    "ci:compile:ios": "cd example/ios && export RCT_NO_LAUNCH_PACKAGER=\"true\" && export RCT_NO_BUNDLE=\"true\" && xcodebuild CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=\"NO\" CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" -destination \"platform=iOS Simulator,name=iPhone 11,OS=13.5\" -workspace ReactNativeAndroidLegacyFingerprintExample.xcworkspace -scheme ReactNativeAndroidLegacyFingerprintExample build-for-testing",
+    "preversion": "npm run lint && npm run build && git add -u && git commit -am lint || :",
+    "postversion": "git push && git push --tags"
+  },
+  "bugs": {
+    "url": "https://github.com/runtrizapps/react-native-android-legacy-fingerprint/issues"
+  },
+  "homepage": "https://github.com/runtrizapps/react-native-android-legacy-fingerprint#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/runtrizapps/react-native-android-legacy-fingerprint.git"
+  },
+  "peerDependencies": {
+    "@babel/runtime": "*",
+    "react-native": ">=0.60.0"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "2.0.0",
+    "@types/react": "^16.9.49",
+    "@types/react-native": "~0.62.13",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-config-standard-with-typescript": "^19.0.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-no-null": "1.0.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-plugin-standard": "4.0.1",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.2"
+  },
+  "files": [
+    "android",
+    "ios",
+    "src",
+    "dist",
+    "example",
+    ".dockerignore",
+    ".editorconfig",
+    ".eslintrc",
+    ".eslintignore",
+    ".prettierrc",
+    "*.md",
+    "*.podspec",
+    "LICENSE"
+  ]
+}

@@ -1,0 +1,57 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  typecheck:
+    name: "Check Types"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm run ci:lint:ts
+      - run: npm run build
+
+  build-android:
+    name: "Build Android"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm run ci:build
+      - run: npm run ci:lint:ts
+      - run: npm run ci:lint:kotlin
+      - run: npm run ci:compile:android
+
+  build-ios:
+    name: "Build iOS"
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: Show the currently detailed version of Xcode for CLI
+        run: xcode-select -p
+      - run: npm run ci:build
+      - run: cd example && npm run install:pods
+      - run: npm run ci:compile:ios
