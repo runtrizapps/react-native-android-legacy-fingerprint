@@ -12,7 +12,7 @@
   "license": "MIT",
   "scripts": {
     "init:package": "cd example && npm i && npm run install:pods",
-    "build": "rm -rf dist && tsc -p ./src",
+    "build": "rm -rf dist && mkdir -p dist && cp src/icon.png dist/ && tsc -p ./src",
     "watch": "npm run build -- -w",
     "lint": "npm run lint:ts && npm run lint:kotlin",
     "lint:ts": "npx eslint . --ext .ts,.tsx --fix",
