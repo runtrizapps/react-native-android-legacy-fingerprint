@@ -27,6 +27,8 @@
     "prettier/prettier": "warn",
     "no-shadow": "off",
     "no-null/no-null": "error",
+    "no-void": ["error", { "allowAsStatement": true }],
+    "react/prop-types": "off",
     "@typescript-eslint/ban-types": ["error", { "types": { "null": null } }],
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
