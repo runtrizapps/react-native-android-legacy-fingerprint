@@ -78,11 +78,10 @@ import { ToastAndroid as Toast } from 'react-native';
 
 (async() => {
   const hardware = await Fingerprint.isHardwareDetected();
-  const permission = await Fingerprint.hasPermission();
   const enrolled = await Fingerprint.hasEnrolledFingerprints();
 
-  if (!hardware || !permission || !enrolled) {
-    let message = !enrolled ? 'No fingerprints registered.' : !hardware ? 'This device doesn\'t support fingerprint scanning.' : 'App has no permission.'
+  if (!hardware || !enrolled) {
+    const message = !enrolled ? 'No fingerprints registered.' : 'This device doesn\'t support fingerprint scanning.';
     Toast.show(message, Toast.SHORT);
     return;
   }
@@ -160,9 +159,6 @@ _For more info on the constants, [see Android FingerprintManager docs](https://d
 
 #### `.isAuthenticationCanceled(): Promise<boolean>`
 Tells you whether or not authentication is running or not.
-
-#### `.hasPermission(): Promise<boolean>`
-Will check if `android.permission.USE_FINGERPRINT` is granted to this app. (should always return true if you add the permission to your AndroidManifest...)
 
 #### `hasEnrolledFingerprints(): Promise<boolean>`
 Determine if there is at least one fingerprint enrolled.  

@@ -67,15 +67,6 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
   }
 
   @ReactMethod
-  fun hasPermission(promise: Promise) {
-    try {
-      promise.resolve(ActivityCompat.checkSelfPermission(reactApplicationContext, Manifest.permission.USE_FINGERPRINT) === PackageManager.PERMISSION_GRANTED)
-    } catch (ex: Exception) {
-      promise.reject(ex)
-    }
-  }
-
-  @ReactMethod
   fun hasEnrolledFingerprints(promise: Promise) {
     try {
       promise.resolve(fingerprintManager.hasEnrolledFingerprints())
@@ -92,10 +83,6 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
   fun isHardwareDetected(promise: Promise) {
     try {
       promise.resolve(fingerprintManager.isHardwareDetected())
-    } catch (secEx: SecurityException) {
-      val exception = Exception("App does not have the proper permissions. (did you add USE_FINGERPRINT to your manifest?)\nMore info see https://github.com/jariz/react-native-fingerprint-android")
-      exception.initCause(secEx)
-      promise.reject(exception)
     } catch (ex: Exception) {
       promise.reject(ex)
     }
@@ -107,10 +94,6 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
       isCanceled = false
       cancellationSignal = CancellationSignal()
       fingerprintManager.authenticate(null, 0, cancellationSignal, AuthenticationCallback(promise), null)
-    } catch (secEx: SecurityException) {
-      val exception = Exception("App does not have the proper permissions. (did you add USE_FINGERPRINT to your manifest?)\nMore info see https://github.com/jariz/react-native-fingerprint-android")
-      exception.initCause(secEx)
-      promise.reject(exception)
     } catch (ex: Exception) {
       promise.reject(ex)
     }

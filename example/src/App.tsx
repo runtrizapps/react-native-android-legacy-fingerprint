@@ -23,19 +23,16 @@ const App: FunctionComponent = () => {
     try {
       // do sanity checks before starting authentication flow.
       // HIGHLY recommended in real life usage. see more on why you should do this in the readme.md
-      const [hardware, permission, enrolled] = await Promise.all([
+      const [hardware, enrolled] = await Promise.all([
         Fingerprint.isHardwareDetected(),
-        Fingerprint.hasPermission(),
         Fingerprint.hasEnrolledFingerprints(),
       ]);
 
-      if (hardware === false || permission === false || enrolled === false) {
-        const failMessage =
-          enrolled === false
-            ? 'No fingerprints registered.'
-            : hardware === false
-            ? "This device doesn't support fingerprint scanning."
-            : 'App has no permission.';
+      if (hardware || enrolled) {
+        const failMessage = enrolled
+          ? 'No fingerprints registered.'
+          : "This device doesn't support fingerprint scanning.";
+
         setPhase('fail');
         setMessage(failMessage);
         return;

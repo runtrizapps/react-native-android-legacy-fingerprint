@@ -13,7 +13,6 @@ function usePromise<T>(asyncFn: () => Promise<T>) {
 const App: FunctionComponent = () => {
   const enrolled = usePromise(LegacyFingerprint.hasEnrolledFingerprints);
   const supported = usePromise(LegacyFingerprint.isHardwareDetected);
-  const permission = usePromise(LegacyFingerprint.hasPermission);
 
   return (
     <View style={styles.container}>
@@ -26,9 +25,6 @@ const App: FunctionComponent = () => {
       </Text>
       <Text style={styles.instructions}>
         Hardware detected (should be false): {`${supported ?? '<waiting>'}`}
-      </Text>
-      <Text style={styles.instructions}>
-        Has permission (should be false): {`${permission ?? '<waiting>'}`}
       </Text>
       <Text style={styles.instructions}>
         Is enrolled (should be false): {`${enrolled ?? '<waiting>'}`}
