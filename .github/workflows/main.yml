@@ -39,7 +39,6 @@ jobs:
 
       - run: npm ci
       - run: npm run ci:build
-      - run: npm run ci:lint:ts
       - run: npm run ci:lint:kotlin
       - run: npm run ci:compile:android
 
