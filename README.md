@@ -17,6 +17,11 @@ Based heavily on [react-native-fingerprint-android](https://github.com/jariz/rea
 * Written with TypeScript & Kotlin
 * Respects project settings for `targetSdk` & build.gradle config
 
+<img alt="Built-in fingerprint dialog"
+  src="example/dialog.webp" width="250px"/>
+<img alt="Custom fingerprint UI"
+  src="example/custom.webp" width="250px"/>
+
 ## Why?
 The currently-maintained fingerprint/biometric auth libraries for React Native have all adopted the new `BiometricPrompt`. This is great!
 
@@ -59,12 +64,6 @@ However, _some vendors_ (\*cough\* Samsung) have custom biometics overlays that 
 ### 1. Install latest version from npm
 
 `$ npm i react-native-android-legacy-fingerprint -S`
-
-## Demo
-
- Android                                       |  iOS
-:---------------------------------------------:|:---------------------------------------------:
-???  |  ???
 
 </table>
 

@@ -28,8 +28,8 @@ const CustomUI: FunctionComponent = () => {
         Fingerprint.hasEnrolledFingerprints(),
       ]);
 
-      if (hardware || enrolled) {
-        const failMessage = enrolled
+      if (!hardware || !enrolled) {
+        const failMessage = !enrolled
           ? 'No fingerprints registered.'
           : "This device doesn't support fingerprint scanning.";
 
@@ -81,16 +81,7 @@ const CustomUI: FunctionComponent = () => {
     AppState.addEventListener('change', handleResume);
     return () => {
       AppState.removeEventListener('change', handleResume);
-      (async () => {
-        try {
-          if ((await Fingerprint.isAuthenticationCanceled()) === false) {
-            // stop listening to authentication.
-            await Fingerprint.cancelAuthentication();
-          }
-        } catch (z) {
-          console.error(z);
-        }
-      })();
+      Fingerprint.cancelAuthentication();
     };
   }, [authenticate]);
   const color = colors[phase];
@@ -118,7 +109,6 @@ const CustomUI: FunctionComponent = () => {
         </Text>
         <Text>{message}</Text>
       </View>
-      <StatusBar backgroundColor="rgba(0, 0, 0, 0.2)" translucent={true} />
     </View>
   );
 };

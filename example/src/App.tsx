@@ -10,6 +10,7 @@ import {
 } from 'react-native-android-legacy-fingerprint';
 
 import CustomUI from './CustomUI';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 function HomeScreen() {
   const navigation = useNavigation();
@@ -25,6 +26,15 @@ function HomeScreen() {
       >
         <Text style={styles.buttonText}>Show built-in dialog</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={async () => {
+          const result = await showLegacyFingerprintDialog({title: 'Custom title', content: 'Custom content'});
+          Toast.show(`Success: ${result.success}`, Toast.LONG);
+        }}
+      >
+        <Text style={styles.buttonText}>Built-in dialog with custom text</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('custom')}>
         <Text style={styles.buttonText}>Custom UI example</Text>
       </TouchableOpacity>
@@ -36,15 +46,19 @@ const Stack = createStackNavigator();
 
 function App() {
   return (
-    <>
+    <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="main" component={HomeScreen} />
-          <Stack.Screen name="custom" component={CustomUI} />
+          <Stack.Screen
+            name="main"
+            component={HomeScreen}
+            options={{ headerTitle: 'Legacy Fingerprint Example' }}
+          />
+          <Stack.Screen name="custom" component={CustomUI} options={{ headerTitle: 'Custom UI' }} />
         </Stack.Navigator>
       </NavigationContainer>
       <LegacyFingerprintDialog />
-    </>
+    </SafeAreaProvider>
   );
 }
 
