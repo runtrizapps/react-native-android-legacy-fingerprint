@@ -40,13 +40,21 @@ export const LegacyFingerprint = {
       }
     }
 
-    // remove the subscriptions and crash if needed
-    DeviceEventEmitter.removeAllListeners('fingerPrintAuthenticationHelp');
+    // remove the subscriptions and throw if needed
+    if (typeof warningCallback === 'function') {
+      DeviceEventEmitter.removeListener('fingerPrintAuthenticationHelp', warningCallback);
+    }
 
     if (typeof err !== 'undefined') {
       throw err;
     }
     return result;
+  },
+  addWarningListener: (warningCallback: (response: FingerprintError) => void) => {
+    DeviceEventEmitter.addListener('fingerPrintAuthenticationHelp', warningCallback);
+    return () => {
+      DeviceEventEmitter.removeListener('fingerPrintAuthenticationHelp', warningCallback);
+    };
   },
   Constants,
 };
