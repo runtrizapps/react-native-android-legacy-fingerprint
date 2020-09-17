@@ -47,22 +47,22 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
 
   // Hardcoded from https://developer.android.com/reference/android/hardware/fingerprint/FingerprintManager.html#FINGERPRINT_ACQUIRED_GOOD
   // So we don't depend on FingerprintManager directly
-  override fun getConstants(): Map<String, Int>? {
-    val constants: MutableMap<String, Int> = HashMap()
-    constants.put("FINGERPRINT_ACQUIRED_GOOD", FINGERPRINT_ACQUIRED_GOOD)
-    constants.put("FINGERPRINT_ACQUIRED_IMAGER_DIRTY", FINGERPRINT_ACQUIRED_IMAGER_DIRTY)
-    constants.put("FINGERPRINT_ACQUIRED_INSUFFICIENT", FINGERPRINT_ACQUIRED_INSUFFICIENT)
-    constants.put("FINGERPRINT_ACQUIRED_PARTIAL", FINGERPRINT_ACQUIRED_PARTIAL)
-    constants.put("FINGERPRINT_ACQUIRED_TOO_FAST", FINGERPRINT_ACQUIRED_TOO_FAST)
-    constants.put("FINGERPRINT_ACQUIRED_TOO_SLOW", FINGERPRINT_ACQUIRED_TOO_SLOW)
-    constants.put("FINGERPRINT_ERROR_CANCELED", FINGERPRINT_ERROR_CANCELED)
-    constants.put("FINGERPRINT_ERROR_USER_CANCELED", FINGERPRINT_ERROR_USER_CANCELED)
-    constants.put("FINGERPRINT_ERROR_HW_UNAVAILABLE", FINGERPRINT_ERROR_HW_UNAVAILABLE)
-    constants.put("FINGERPRINT_ERROR_LOCKOUT", FINGERPRINT_ERROR_LOCKOUT)
-    constants.put("FINGERPRINT_ERROR_NO_SPACE", FINGERPRINT_ERROR_NO_SPACE)
-    constants.put("FINGERPRINT_ERROR_TIMEOUT", FINGERPRINT_ERROR_TIMEOUT)
-    constants.put("FINGERPRINT_ERROR_UNABLE_TO_PROCESS", FINGERPRINT_ERROR_UNABLE_TO_PROCESS)
-    constants.put("FINGERPRINT_ERROR_VENDOR", FINGERPRINT_ERROR_VENDOR)
+  override fun getConstants(): Map<String, String>? {
+    val constants: MutableMap<String, String> = HashMap()
+    constants.put("FINGERPRINT_ACQUIRED_GOOD", Integer.toString(FINGERPRINT_ACQUIRED_GOOD))
+    constants.put("FINGERPRINT_ACQUIRED_IMAGER_DIRTY", Integer.toString(FINGERPRINT_ACQUIRED_IMAGER_DIRTY))
+    constants.put("FINGERPRINT_ACQUIRED_INSUFFICIENT", Integer.toString(FINGERPRINT_ACQUIRED_INSUFFICIENT))
+    constants.put("FINGERPRINT_ACQUIRED_PARTIAL", Integer.toString(FINGERPRINT_ACQUIRED_PARTIAL))
+    constants.put("FINGERPRINT_ACQUIRED_TOO_FAST", Integer.toString(FINGERPRINT_ACQUIRED_TOO_FAST))
+    constants.put("FINGERPRINT_ACQUIRED_TOO_SLOW", Integer.toString(FINGERPRINT_ACQUIRED_TOO_SLOW))
+    constants.put("FINGERPRINT_ERROR_CANCELED", Integer.toString(FINGERPRINT_ERROR_CANCELED))
+    constants.put("FINGERPRINT_ERROR_USER_CANCELED", Integer.toString(FINGERPRINT_ERROR_USER_CANCELED))
+    constants.put("FINGERPRINT_ERROR_HW_UNAVAILABLE", Integer.toString(FINGERPRINT_ERROR_HW_UNAVAILABLE))
+    constants.put("FINGERPRINT_ERROR_LOCKOUT", Integer.toString(FINGERPRINT_ERROR_LOCKOUT))
+    constants.put("FINGERPRINT_ERROR_NO_SPACE", Integer.toString(FINGERPRINT_ERROR_NO_SPACE))
+    constants.put("FINGERPRINT_ERROR_TIMEOUT", Integer.toString(FINGERPRINT_ERROR_TIMEOUT))
+    constants.put("FINGERPRINT_ERROR_UNABLE_TO_PROCESS", Integer.toString(FINGERPRINT_ERROR_UNABLE_TO_PROCESS))
+    constants.put("FINGERPRINT_ERROR_VENDOR", Integer.toString(FINGERPRINT_ERROR_VENDOR))
     return constants
   }
 
@@ -151,7 +151,7 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
     override fun onAuthenticationHelp(helpCode: Int, helpString: CharSequence) {
       super.onAuthenticationHelp(helpCode, helpString)
       val writableNativeMap = WritableNativeMap()
-      writableNativeMap.putInt("code", helpCode)
+      writableNativeMap.putString("code", Integer.toString(helpCode))
       writableNativeMap.putString("message", helpString.toString())
       reactApplicationContext
         .getJSModule(RCTDeviceEventEmitter::class.java)

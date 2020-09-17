@@ -1,20 +1,20 @@
 import { NativeModules } from 'react-native';
 
 export default NativeModules.RNALFLegacyFingerprint as {
-  readonly FINGERPRINT_ACQUIRED_GOOD: number;
-  readonly FINGERPRINT_ACQUIRED_IMAGER_DIRTY: number;
-  readonly FINGERPRINT_ACQUIRED_INSUFFICIENT: number;
-  readonly FINGERPRINT_ACQUIRED_PARTIAL: number;
-  readonly FINGERPRINT_ACQUIRED_TOO_FAST: number;
-  readonly FINGERPRINT_ACQUIRED_TOO_SLOW: number;
-  readonly FINGERPRINT_ERROR_CANCELED: number;
-  readonly FINGERPRINT_ERROR_USER_CANCELED: number;
-  readonly FINGERPRINT_ERROR_HW_UNAVAILABLE: number;
-  readonly FINGERPRINT_ERROR_LOCKOUT: number;
-  readonly FINGERPRINT_ERROR_NO_SPACE: number;
-  readonly FINGERPRINT_ERROR_TIMEOUT: number;
-  readonly FINGERPRINT_ERROR_UNABLE_TO_PROCESS: number;
-  readonly FINGERPRINT_ERROR_VENDOR: number;
+  readonly FINGERPRINT_ACQUIRED_GOOD: string;
+  readonly FINGERPRINT_ACQUIRED_IMAGER_DIRTY: string;
+  readonly FINGERPRINT_ACQUIRED_INSUFFICIENT: string;
+  readonly FINGERPRINT_ACQUIRED_PARTIAL: string;
+  readonly FINGERPRINT_ACQUIRED_TOO_FAST: string;
+  readonly FINGERPRINT_ACQUIRED_TOO_SLOW: string;
+  readonly FINGERPRINT_ERROR_CANCELED: string;
+  readonly FINGERPRINT_ERROR_USER_CANCELED: string;
+  readonly FINGERPRINT_ERROR_HW_UNAVAILABLE: string;
+  readonly FINGERPRINT_ERROR_LOCKOUT: string;
+  readonly FINGERPRINT_ERROR_NO_SPACE: string;
+  readonly FINGERPRINT_ERROR_TIMEOUT: string;
+  readonly FINGERPRINT_ERROR_UNABLE_TO_PROCESS: string;
+  readonly FINGERPRINT_ERROR_VENDOR: string;
 
   hasPermission: () => Promise<boolean>;
   cancelAuthentication: () => Promise<void>;
