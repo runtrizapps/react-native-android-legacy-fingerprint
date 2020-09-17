@@ -36,6 +36,7 @@
   },
   "peerDependencies": {
     "@babel/runtime": "*",
+    "react": "*",
     "react-native": ">=0.60.0"
   },
   "devDependencies": {
@@ -70,5 +71,8 @@
     ".prettierrc",
     "*.md",
     "LICENSE"
-  ]
+  ],
+  "dependencies": {
+    "nanoevents": "^5.0.0"
+  }
 }

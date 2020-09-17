@@ -1,16 +1,19 @@
+import { createNanoEvents } from 'nanoevents';
 import React, {
+  ComponentType,
   createRef,
   FunctionComponent,
   MutableRefObject,
+  useCallback,
   useEffect,
   useRef,
   useState,
-  ComponentType,
-  useCallback,
 } from 'react';
 import {
   AppState,
   AppStateStatus,
+  Image,
+  ImageStyle,
   Modal,
   StyleProp,
   StyleSheet,
@@ -19,25 +22,46 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-  Image,
-  ImageStyle,
 } from 'react-native';
 
 import Fingerprint, { FingerprintError } from '.';
 
 type OpeningOptions = {
-  visible?: boolean;
   title?: string;
   content?: string;
 };
 
-const DialogRef = createRef() as MutableRefObject<((opts?: OpeningOptions) => void) | undefined>;
+type LegacyFingerprintResult = { success: boolean };
 
-export function showLegacyFingerprintDialog(opts?: OpeningOptions) {
+type InternalRefParam = OpeningOptions & {
+  visible: boolean;
+  callback?: (result: LegacyFingerprintResult) => void;
+};
+
+const DialogRef = createRef() as MutableRefObject<((param: InternalRefParam) => void) | undefined>;
+
+export async function showLegacyFingerprintDialog(
+  opts?: OpeningOptions
+): Promise<LegacyFingerprintResult> {
   if (typeof DialogRef.current === 'undefined') {
-    console.log('LegacyFingerprintDialog must be mounted in your app');
+    throw new Error('LegacyFingerprintDialog must be mounted in your app');
   }
-  DialogRef.current?.(opts);
+  const { current: refFn } = DialogRef;
+  const promise = new Promise<LegacyFingerprintResult>((resolve) => {
+    refFn({
+      ...opts,
+      visible: true,
+      callback: resolve,
+    });
+  });
+  return await promise;
+}
+
+export function cancelLegacyFingerprintDialog(): void {
+  if (typeof DialogRef.current === 'undefined') {
+    throw new Error('LegacyFingerprintDialog must be mounted in your app');
+  }
+  DialogRef.current({ visible: false });
 }
 
 type Props = {
@@ -63,6 +87,10 @@ type Props = {
   };
 };
 
+type Events = {
+  complete: (result: LegacyFingerprintResult) => void;
+};
+
 const DEFAULT_TEXTS = {
   headerText: 'Fingerprint confirmation',
   contentText: 'Use your fingerprint scanner to verify your identity',
@@ -78,19 +106,37 @@ export const LegacyFingerprintDialog: FunctionComponent<Props> = (props) => {
   const [content, setContent] = useState(props.contentText ?? DEFAULT_TEXTS.contentText);
   const [hint, setHint] = useState(props.terms?.hint ?? DEFAULT_TEXTS.hint);
   const [appActive, setAppActive] = useState(true);
+  const emitter = useRef(createNanoEvents<Events>()).current;
+
+  const handlePressCancel = useCallback(() => {
+    setVisible(false);
+    emitter.emit('complete', { success: false });
+  }, [emitter]);
 
   // Set up external function ref
   useEffect(() => {
-    DialogRef.current = (opts?: OpeningOptions) => {
-      setVisible(opts?.visible ?? true);
-      if (typeof opts?.title !== 'undefined') {
-        setTitle(opts.title);
+    DialogRef.current = (param: InternalRefParam) => {
+      if (typeof param.title !== 'undefined') {
+        setTitle(param.title);
       }
-      if (typeof opts?.content !== 'undefined') {
-        setContent(opts.content);
+      if (typeof param.content !== 'undefined') {
+        setContent(param.content);
+      }
+
+      if (param.visible) {
+        setVisible(param.visible);
+        if (typeof param.callback === 'function') {
+          const { callback } = param;
+          const unbind = emitter.on('complete', (result) => {
+            callback(result);
+            unbind();
+          });
+        }
+      } else {
+        handlePressCancel();
       }
     };
-  }, [setVisible]);
+  }, [handlePressCancel, emitter]);
 
   // Set content text on warning
   useEffect(() => {
@@ -130,13 +176,13 @@ export const LegacyFingerprintDialog: FunctionComponent<Props> = (props) => {
       .then((success) => {
         if (success) {
           setHint(props.terms?.success ?? DEFAULT_TEXTS.success);
+          emitter.emit('complete', { success: true });
           setTimeout(() => setVisible(false), 500);
         } else {
           setHint(props.terms?.failure ?? DEFAULT_TEXTS.failure);
           void Fingerprint.cancelAuthentication().then(() => {
             setTimeout(performAuth, 250);
           });
-
         }
       })
       .catch((e: Error & { code?: string }) => {
@@ -144,7 +190,7 @@ export const LegacyFingerprintDialog: FunctionComponent<Props> = (props) => {
           throw e;
         }
       });
-  }, [props.terms?.success, props.terms?.failure]);
+  }, [props.terms?.success, props.terms?.failure, emitter]);
   useEffect(() => {
     if (visible) {
       if (appActive) {
@@ -155,10 +201,8 @@ export const LegacyFingerprintDialog: FunctionComponent<Props> = (props) => {
     }
   }, [visible, appActive, performAuth]);
 
-  const handlePressCancel = () => setVisible(false);
-
   return (
-    <Modal visible={visible} animationType="fade" transparent>
+    <Modal visible={visible} animationType="fade" transparent onRequestClose={handlePressCancel}>
       <View style={[styles.background, props.backgroundStyle]}>
         <View style={[styles.modal, props.modalStyle]}>
           <View style={[styles.header, props.headerStyle]}>
