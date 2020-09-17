@@ -31,7 +31,7 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
 
   var fingerprintManager: FingerprintManagerCompat
   var cancellationSignal: CancellationSignal? = null
-  var isCancelled = false
+  var isCanceled = false
 
   companion object {
     const val reactClass = "RNALFLegacyFingerprint"
@@ -104,7 +104,7 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
   @ReactMethod
   fun authenticate(promise: Promise) {
     try {
-      isCancelled = false
+      isCanceled = false
       cancellationSignal = CancellationSignal()
       fingerprintManager.authenticate(null, 0, cancellationSignal, AuthenticationCallback(promise), null)
     } catch (secEx: SecurityException) {
@@ -118,15 +118,15 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
 
   @ReactMethod
   fun isAuthenticationCanceled(promise: Promise) {
-    promise.resolve(isCancelled)
+    promise.resolve(isCanceled)
   }
 
   @ReactMethod
   fun cancelAuthentication(promise: Promise) {
     try {
-      if (!isCancelled) {
+      if (!isCanceled) {
         cancellationSignal?.cancel()
-        isCancelled = true
+        isCanceled = true
       }
       promise.resolve(null)
     } catch (e: Exception) {
@@ -138,7 +138,7 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
       super.onAuthenticationError(errorCode, errString)
       if (errorCode == FINGERPRINT_ERROR_CANCELED) {
-        isCancelled = true
+        isCanceled = true
       }
       if (promise == null) {
         Log.e("LegacyFingerprint", "Tried to reject the auth promise, but it was already resolved / rejected. This shouldn't happen.")
