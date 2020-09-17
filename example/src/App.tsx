@@ -30,14 +30,14 @@ const App: FunctionComponent = () => {
       ]);
 
       if (hardware === false || permission === false || enrolled === false) {
-        const message =
+        const failMessage =
           enrolled === false
             ? 'No fingerprints registered.'
             : hardware === false
             ? "This device doesn't support fingerprint scanning."
             : 'App has no permission.';
         setPhase('fail');
-        setMessage(message);
+        setMessage(failMessage);
         return;
       }
 
