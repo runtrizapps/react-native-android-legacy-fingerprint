@@ -2,6 +2,7 @@ package com.runtriz.legacyfingerprint
 
 import android.content.pm.PackageManager
 import android.Manifest
+import android.os.Build
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
@@ -63,6 +64,10 @@ class LegacyFingerprint(context: ReactApplicationContext) : ReactContextBaseJava
     constants.put("FINGERPRINT_ERROR_TIMEOUT", Integer.toString(FINGERPRINT_ERROR_TIMEOUT))
     constants.put("FINGERPRINT_ERROR_UNABLE_TO_PROCESS", Integer.toString(FINGERPRINT_ERROR_UNABLE_TO_PROCESS))
     constants.put("FINGERPRINT_ERROR_VENDOR", Integer.toString(FINGERPRINT_ERROR_VENDOR))
+
+    constants.put("BRAND", Build.BRAND);
+    constants.put("MANUFACTURER", Build.MANUFACTURER);
+    constants.put("MODEL", Build.MODEL);
     return constants
   }
 

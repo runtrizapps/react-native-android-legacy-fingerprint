@@ -16,6 +16,10 @@ export default NativeModules.RNALFLegacyFingerprint as {
   readonly FINGERPRINT_ERROR_UNABLE_TO_PROCESS: string;
   readonly FINGERPRINT_ERROR_VENDOR: string;
 
+  readonly BRAND: string;
+  readonly MANUFACTURER: string;
+  readonly MODEL: string;
+
   cancelAuthentication: () => Promise<void>;
   isAuthenticationCanceled: () => Promise<boolean>;
   hasEnrolledFingerprints: () => Promise<boolean>;
