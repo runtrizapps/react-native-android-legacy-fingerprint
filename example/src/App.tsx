@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { AppState, AppStateStatus, StatusBar, StyleSheet, Text } from 'react-native';
 import Fingerprint from 'react-native-android-legacy-fingerprint';
 import { View } from 'react-native-animatable';
@@ -17,7 +17,7 @@ const App: FunctionComponent = () => {
   const [phase, setPhase] = useState<Phases>('normal');
   const [message, setMessage] = useState('');
 
-  const authenticate = async () => {
+  const authenticate = useCallback(async () => {
     setPhase('normal');
     setMessage('');
     try {
@@ -68,7 +68,7 @@ const App: FunctionComponent = () => {
       setPhase('fail');
       setMessage(error.message);
     }
-  };
+  }, []);
 
   useEffect(() => {
     authenticate();
@@ -95,7 +95,7 @@ const App: FunctionComponent = () => {
         }
       })();
     };
-  });
+  }, [authenticate]);
   const color = colors[phase];
   return (
     <View style={{ flex: 1 }}>
