@@ -13,7 +13,7 @@ const colors = {
 
 type Phases = keyof typeof colors;
 
-const App: FunctionComponent = () => {
+const CustomUI: FunctionComponent = () => {
   const [phase, setPhase] = useState<Phases>('normal');
   const [message, setMessage] = useState('');
 
@@ -43,7 +43,7 @@ const App: FunctionComponent = () => {
         setMessage(warning.message);
       });
 
-      if (result === true) {
+      if (result) {
         setPhase('success');
         setMessage('');
       } else {
@@ -59,7 +59,7 @@ const App: FunctionComponent = () => {
     } catch (error) {
       if (error.code === Fingerprint.FINGERPRINT_ERROR_CANCELED) {
         // we don't show this error to the user.
-        // we will check if the auth was cancelled & restart the flow when the appstate becomes active again.
+        // we will check if the auth was canceled & restart the flow when the appstate becomes active again.
         return;
       }
       setPhase('fail');
@@ -123,7 +123,7 @@ const App: FunctionComponent = () => {
   );
 };
 
-export default App;
+export default CustomUI;
 
 const styles = StyleSheet.create({
   container: {
